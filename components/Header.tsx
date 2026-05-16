@@ -1,35 +1,42 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/authStore";
+import Link from "next/link";
 
 export default function Header() {
-  const isauth = true
+  const { user, logout } = useAuthStore();
+  console.log(user)
+
   return (
-    <header className="w-full flex justify-center bg-sidebar">
-        <div className="max-w-3xl w-full flex justify-between items-center p-4">
-            <div className="flex gap-2">
-                <Button variant="outline" asChild>
-                    <Link href="/">Главная</Link >
-                </Button>
-                <Button variant="outline" asChild>
-                    <Link href="/books">Книги</Link >
-                </Button>
-            </div>
-            {!isauth ? <div className="flex items-center">
-                <Button variant="link" asChild>
-                    <Link href="/login">Войти</Link >
-                </Button>
-                /
-                <Button variant="link" asChild>
-                    <Link href="/register">Зарегестрироваться</Link >
-                </Button>
-            </div>
-            :
-            <div>
-                <Button variant="outline" asChild>
-                    <Link href='/profile'>Профиль</Link>
-                </Button>
-            </div>}
-        </div>
+    <header className="border-b">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
+        <Link href="/" className="flex items-center gap-2 font-bold">
+          <span>BookRecommender</span>
+        </Link>
+
+        <Button variant="link" asChild>
+          <Link href="/books">Поиск</Link>
+        </Button>
+
+        {user ? (
+          <div className="flex items-center gap-4">
+            <span className="text-sm">Привет, {user.username}</span>
+            <Button variant="outline" onClick={logout}>
+              Выйти
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" asChild>
+              <Link href="/login">Вход</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/register">Регистрация</Link>
+            </Button>
+          </div>
+        )}
+      </div>
     </header>
-  )
+  );
 }

@@ -1,0 +1,60 @@
+{
+  "books":
+  [{
+    "id": "1",
+    "title": "Book",
+    "author": "Author",
+    "rating": 5,
+    "year": 2024,
+    "genres": ["fake"]
+  },{
+    "id": "2",
+    "title": "Book2",
+    "author": "Author2",
+    "rating": 1.3,
+    "year": 2023,
+    "genres": ["fake"]
+  },{
+    "id": "3",
+    "title": "Book3",
+    "author": "Author3",
+    "rating": 4.3,
+    "year": 2022,
+    "genres": ["fake"]
+  },{
+    "id": "4",
+    "title": "Book4",
+    "author": "Author4",
+    "rating": 1.1,
+    "year": 2021,
+    "genres": ["fake"]
+  },{
+    "id": "5",
+    "title": "Book5",
+    "author": "Author5",
+    "rating": 4.8,
+    "year": 2025,
+    "genres": ["fake"]
+  },{
+    "id": "6",
+    "title": "Book6",
+    "author": "Author6",
+    "rating": 4.5,
+    "year": 2026,
+    "genres": ["fake"]
+  },{
+    "id": "7",
+    "title": "Book7",
+    "author": "Author2",
+    "rating": 2.3,
+    "year": 2024,
+    "genres": ["fake"]
+  },{
+    "id": "8",
+    "title": "Book8",
+    "author": "Author8",
+    "rating": 4,
+    "year": 2024,
+    "genres": ["fake"]
+  }]
+}

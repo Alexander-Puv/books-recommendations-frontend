@@ -1,5 +1,8 @@
-export default function Profile() {
+'use client'
+
+export default function ProfilePage() {
   return (
-    <div>page</div>
+    <div className="">
+    </div>
   )
 }

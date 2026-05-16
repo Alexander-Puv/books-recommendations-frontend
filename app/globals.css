@@ -123,8 +123,22 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-cormorant), Garamond, 'Times New Roman', serif;
   }
   html {
-    @apply font-sans;
+    @apply font-sans text-[115%];
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair), Georgia, 'Times New Roman', serif;
+  }
+}
+
+@layer utilities {
+  .font-title {
+    font-family: var(--font-playfair), Georgia, 'Times New Roman', serif;
+  }
+  
+  .font-body {
+    font-family: var(--font-cormorant), Garamond, 'Times New Roman', serif;
   }
 }
