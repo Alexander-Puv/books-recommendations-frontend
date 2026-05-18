@@ -3,7 +3,7 @@ interface Book {
   title: string
 
   // Автор
-  authorId: string
+  author_id: string
   author: string
 
   // Основная информация
@@ -12,21 +12,21 @@ interface Book {
   year: number
 
   // Статистика
-  averageRating: number
-  ratingsCount: number
-  readCount: number
-  reviewCount: number
+  average_rating: number
+  ratings_count: number
+  read_count: number
+  review_count: number
 
   // Ссылки и медиа
-  coverUrl: string
-  goodreadsUrl: string
+  cover_url: string
+  goodreads_url: string
 }
 
 interface User {
   id: string
   username: string
   email: string
-  password_hash?: string // Не используем на фронте, но для типизации
+  password_hash: string
 }
 
 interface Genre {
@@ -35,26 +35,29 @@ interface Genre {
 }
 
 interface Favorite {
-  id: number
-  user_id: string
-  book_id: string
+  favorite_id: number;
+  user_id: string;
+  book: Book;
+}
+
+ interface InteractionBook {
+  title: string;
+  author: string;
+  genre: string;
+  average_rating: number;
 }
 
 interface Interaction {
-  id: number
-  review_id: string
-  user_id: string
-  book_id: string
-  is_read: boolean
-  rating: number
-  review_text: string
-  date_added: string
-  date_updated: string
-  started_at: string | null
-  read_at: string | null
+  interaction_id: number;
+  user_id: string;
+  book_id: string;
+  is_read: boolean;
+  rating: number;
+  review_text: string;
+  book?: InteractionBook;
 }
 
-interface UserPreference {
+interface Preference {
   id: number
   user_id: string
   genre: string
@@ -62,7 +65,7 @@ interface UserPreference {
 }
 
 interface Recommendation {
-  book_id: string
+  id: string
   title: string
   author: string
   genre: string

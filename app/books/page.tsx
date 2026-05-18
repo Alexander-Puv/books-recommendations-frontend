@@ -1,43 +1,39 @@
-"use client"
+"use client";
 
-import { useMemo, useState } from "react"
-import { Search } from "lucide-react"
+import { Search } from "lucide-react";
+import { useState } from "react";
 
-import tempBooks from "@/temp/books"
-
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { BookCard } from "@/components/ui/bookCard"
+import { BookCard } from "@/components/ui/bookCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { booksApi } from "@/lib/api";
 
 export default function BooksPage() {
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("");
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Пока используем локальные моковые данные.
-  // Когда будет готов бэкенд, этот массив заменится на данные из API.
-  const filteredBooks = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase()
+  // поиск через API
+  async function handleSearch() {
+    const q = query.trim();
 
-    if (!normalizedQuery) {
-      return tempBooks
+    if (!q) {
+      setBooks([]);
+      return;
     }
 
-    return tempBooks.filter((book) => {
-      const title = book.title.toLowerCase()
-      const author = book.author.toLowerCase()
-      const genre = book.genre.toLowerCase()
-      const year = String(book.year)
+    setLoading(true);
 
-      return (
-        title.includes(normalizedQuery) ||
-        author.includes(normalizedQuery) ||
-        genre.includes(normalizedQuery) ||
-        year.includes(normalizedQuery)
-      )
-    })
-  }, [query])
+    try {
+      const res = await booksApi.searchBooks(q); 
+      setBooks(res.results);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <main className="container mx-auto px-4 py-6 space-y-6">
+    <main className="container mx-auto space-y-6 px-4 py-6">
       {/* Заголовок */}
       <section className="space-y-2">
         <h1 className="text-3xl font-bold">Поиск книг</h1>
@@ -55,10 +51,13 @@ export default function BooksPage() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Название книги, автор, жанр или год..."
             className="pl-9"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
           />
         </div>
 
-        <Button type="button">
+        <Button onClick={handleSearch} type="button">
           Найти
         </Button>
       </section>
@@ -71,32 +70,29 @@ export default function BooksPage() {
           </h2>
 
           <span className="text-sm text-muted-foreground">
-            Найдено: {filteredBooks.length}
+            Найдено: {books.length}
           </span>
         </div>
 
-        {filteredBooks.length > 0 ? (
+        {loading ? (
+          <div className="py-10 text-center text-muted-foreground">
+            Поиск...
+          </div>
+        ) : books.length > 0 ? (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {filteredBooks.map((book) => (
-              <BookCard
-                key={book.id}
-                {...book}
-                coverUrl={book.coverUrl}
-                variant="default"
-              />
+            {books.map((book) => (
+              <BookCard key={book.id} {...book} variant="default" />
             ))}
           </div>
         ) : (
           <div className="rounded-xl border bg-card p-8 text-center">
-            <p className="text-lg font-medium">
-              Ничего не найдено
-            </p>
+            <p className="text-lg font-medium">Ничего не найдено</p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Попробуйте изменить поисковый запрос.
+              Попробуйте изменить запрос.
             </p>
           </div>
         )}
       </section>
     </main>
-  )
+  );
 }

@@ -1,10 +1,11 @@
+import { Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { BookOpen, Star } from "lucide-react"
 
-import { cn } from "@/lib/utils"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { BookOpen } from "lucide-react"
 
 type BookCardVariant =
   | "default"
@@ -20,8 +21,8 @@ export const BookCard = ({
   id,
   title,
   author,
-  coverUrl,
-  averageRating,
+  cover_url,
+  average_rating,
   year,
   genre,
   variant = "default",
@@ -40,9 +41,9 @@ export const BookCard = ({
             variant === "featured" && "aspect-3/2"
           )}
         >
-          {coverUrl ? (
+          {cover_url ? (
             <Image
-              src={coverUrl}
+              src={cover_url}
               alt={title}
               fill
               className="object-cover"
@@ -57,7 +58,7 @@ export const BookCard = ({
 
           <div className="absolute top-2 right-2 flex items-center gap-1 rounded-md bg-black/70 px-2 py-1 text-xs text-white backdrop-blur-sm">
             <Star className="size-3 fill-yellow-400 stroke-none" />
-            {averageRating.toFixed(1)}
+            {average_rating.toFixed(1)}
           </div>
         </div>
 
@@ -76,7 +77,7 @@ export const BookCard = ({
             {variant === "default" && (
               <div className="mt-2">
                 <Badge variant="secondary" className="max-w-full text-[10px]">
-                  <span className="truncate block max-w-[100px]">{genre}</span>
+                  <span className="truncate block max-w-25">{genre}</span>
                 </Badge>
               </div>
             )}

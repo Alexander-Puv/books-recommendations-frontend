@@ -6,7 +6,6 @@ import Link from "next/link";
 
 export default function Header() {
   const { user, logout } = useAuthStore();
-  console.log(user)
 
   return (
     <header className="border-b">

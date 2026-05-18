@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createUser, getUsers, User } from "@/lib/api";
+import { usersApi } from "@/lib/api";
 
 interface RegisterData {
   username: string;
@@ -36,7 +36,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       set({ isLoading: true, error: null });
 
-      const users = await getUsers();
+      const users = await usersApi.getUsers();
 
       const existingUser = users.find(
         (user) => user.email.toLowerCase() === email.toLowerCase()
@@ -50,7 +50,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         return false;
       }
 
-      const newUser = await createUser({
+      const newUser = await usersApi.createUser({
         id: generateUserId(),
         username,
         email,
@@ -78,7 +78,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       set({ isLoading: true, error: null });
 
-      const users = await getUsers();
+      const users = await usersApi.getUsers();
 
       const user = users.find(
         (u) =>
