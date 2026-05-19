@@ -22,6 +22,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useInteractions } from "@/hooks/useInteractions";
 import { Button } from "@/components/ui/button";
+import { useProfileData } from "@/hooks/useProfileData";
+import { FavoritesSection } from "@/components/FavoritesSection";
 
 function getInitials(username: string) {
   return username
@@ -36,6 +38,10 @@ export default function ProfilePage() {
   const { user, logout } = useAuthStore();
 
   const { data: interactions = [], isLoading } = useInteractions(user?.id);
+  const { data: profileData } = useProfileData(user?.id);
+
+  const favorites = profileData?.favorites ?? [];
+  const preferences = profileData?.preferences ?? [];
 
   const stats = useMemo(() => {
     const readBooks = interactions.filter((i) => i.is_read).length;
@@ -88,7 +94,7 @@ export default function ProfilePage() {
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <h1 className="text-3xl font-bold">{user.username}</h1>
-                <Badge variant="secondary">Reader</Badge>
+                <Badge variant="secondary">Читатель</Badge>
               </div>
 
               <div className="flex items-center gap-2 text-muted-foreground">
@@ -111,7 +117,7 @@ export default function ProfilePage() {
             <BookOpen className="h-8 w-8 text-muted-foreground" />
             <div>
               <p className="text-2xl font-bold">{stats.readBooks}</p>
-              <p className="text-sm text-muted-foreground">Books Read</p>
+              <p className="text-sm text-muted-foreground">Книг прочитано</p>
             </div>
           </CardContent>
         </Card>
@@ -121,7 +127,7 @@ export default function ProfilePage() {
             <Star className="h-8 w-8 text-muted-foreground" />
             <div>
               <p className="text-2xl font-bold">{stats.averageRating}</p>
-              <p className="text-sm text-muted-foreground">Average Rating</p>
+              <p className="text-sm text-muted-foreground">Средняя оценка</p>
             </div>
           </CardContent>
         </Card>
@@ -131,7 +137,7 @@ export default function ProfilePage() {
             <MessageSquare className="h-8 w-8 text-muted-foreground" />
             <div>
               <p className="text-2xl font-bold">{stats.reviewedBooks}</p>
-              <p className="text-sm text-muted-foreground">Reviews Written</p>
+              <p className="text-sm text-muted-foreground">Отзывов написано</p>
             </div>
           </CardContent>
         </Card>
@@ -141,19 +147,40 @@ export default function ProfilePage() {
             <CheckCircle2 className="h-8 w-8 text-muted-foreground" />
             <div>
               <p className="text-2xl font-bold">{stats.ratedBooks}</p>
-              <p className="text-sm text-muted-foreground">Books Rated</p>
+              <p className="text-sm text-muted-foreground">Книг оценено</p>
             </div>
           </CardContent>
         </Card>
       </section>
 
+      <FavoritesSection favorites={favorites} />
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold">Предпочтения</h2>
+
+        {preferences.length > 0 ? (
+          <div className="flex flex-wrap gap-3">
+            {preferences.map((p) => (
+              <div
+                key={p.id}
+                className="rounded-xl border bg-card px-4 py-2"
+              >
+                <div className="font-medium">{p.genre}</div>
+                <div className="text-xs text-muted-foreground">
+                  weight: {p.weight}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted-foreground">No preferences set</p>
+        )}
+      </section>
+
       {/* Reviewed Books */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-2xl font-bold">My Reviews</h2>
-          <p className="text-muted-foreground">
-            Books you have reviewed and rated.
-          </p>
+          <h2 className="text-2xl font-bold">Мои отзывы</h2>
         </div>
 
         {isLoading ? (
@@ -195,7 +222,7 @@ export default function ProfilePage() {
                     href={`/books/${interaction.book_id}`}
                     className="text-sm font-medium text-primary hover:underline"
                   >
-                    View book →
+                    К книге →
                   </Link>
                 </CardContent>
               </Card>
