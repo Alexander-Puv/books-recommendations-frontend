@@ -5,7 +5,7 @@ import { useAuthStore } from "@/store/authStore";
 import Link from "next/link";
 
 export default function Header() {
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
 
   return (
     <header className="border-b">
@@ -21,8 +21,9 @@ export default function Header() {
         {user ? (
           <div className="flex items-center gap-4">
             <span className="text-sm">Привет, {user.username}</span>
-            <Button variant="outline" onClick={logout}>
-              Выйти
+
+            <Button variant="outline" asChild>
+              <Link href="/profile">Профиль</Link>
             </Button>
           </div>
         ) : (
