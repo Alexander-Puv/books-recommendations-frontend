@@ -17,16 +17,17 @@ export default function Home() {
       if (!data?.recommendations) return;
       
       const recBooksData = await Promise.all(
-        data.recommendations.map((r) => booksApi.getBookById(r.id))
+        data.recommendations.map((r) => booksApi.getBookById(r.book_id))
       );
 
-      const topBooksData = await (await booksApi.getTopBooks()).books
+      const topBooksData = (await booksApi.getTopBooks()).books      
       
       setRecommendations(recBooksData);
       setTopBooks(topBooksData)
     }
 
     load();
+      console.log(data);
   }, [data]);
 
   if (!user) {

@@ -243,3 +243,25 @@ export const recommendationsApi = {
   getRecommendations: (userId: string) =>
     fetchApi<RecommendationsResponse>(`/recommendations/${userId}`),
 };
+
+/* =========================
+   AUTH
+========================= */
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  message: string;
+  user: User;
+}
+
+export const authApi = {
+  login: (data: LoginRequest) =>
+    fetchApi<LoginResponse>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+};

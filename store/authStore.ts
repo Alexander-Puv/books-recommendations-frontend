@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { usersApi } from "@/lib/api";
+import { authApi, usersApi } from "@/lib/api";
 
 interface RegisterData {
   username: string;
@@ -78,15 +78,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       set({ isLoading: true, error: null });
 
-      const users = await usersApi.getUsers();
+      const loginResponse = await authApi.login({ email, password });
 
-      const user = users.find(
-        (u) =>
-          u.email.toLowerCase() === email.toLowerCase() &&
-          u.password_hash === password
-      );
-
-      if (!user) {
+      if (!loginResponse.user) {
         set({
           error: "Неверный email или пароль",
           isLoading: false,
@@ -94,17 +88,17 @@ export const useAuthStore = create<AuthState>((set) => ({
         return false;
       }
 
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(loginResponse.user));
 
       set({
-        user,
+        user: loginResponse.user,
         isLoading: false,
       });
 
       return true;
-    } catch {
+    } catch (error: any) {
       set({
-        error: "Ошибка входа",
+        error: error.message || "Ошибка входа",
         isLoading: false,
       });
       return false;

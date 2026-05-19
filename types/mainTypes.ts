@@ -65,7 +65,7 @@ interface Preference {
 }
 
 interface Recommendation {
-  id: string
+  book_id: string
   title: string
   author: string
   genre: string
@@ -73,4 +73,5 @@ interface Recommendation {
   average_rating: number
   score: number
   reason: string
+  cover_url: string
 }
